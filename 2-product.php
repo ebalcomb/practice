@@ -21,14 +21,14 @@ function getProductsOfAllIntsExceptAtIndex($array) {
 // solution 2, O(N)
 
 function getProductsOfAllIntsExceptAtIndex2($intArray) {
-  $productsOfAllIntsExceptIndex = [1, 1, 7, 21];
+  $productsOfAllInts = array();
 
 	// for each index
   	// put the product so far in the result array(initialize at 1)
   	// THEN update the "product so far" value by the value at that index
 	$productSoFar = 1;
 	for ($i = 0; $i < count($intArray); $i++) {
-	    $productsOfAllIntsExceptIndex[$i] = $productSoFar;
+	    $productsOfAllInts[$i] = $productSoFar;
 	    $productSoFar *= $intArray[$i];
 	}
 
@@ -37,11 +37,11 @@ function getProductsOfAllIntsExceptAtIndex2($intArray) {
   	// THEN multiply the existing "product so far" value by the value at that index
 	$productAfter = 1;
 	for ($i = count($intArray) -1; $i >= 0; $i--) {
-	    $productsOfAllIntsExceptIndex[$i] *= $productAfter;
+	    $productsOfAllInts[$i] *= $productAfter;
 	    $productAfter *= $intArray[$i];
 	}
 
-	return $productsOfAllIntsExceptIndex;
+	return $productsOfAllInts;
 }
 
 $cool_array = [1, 7, 3, 4];
