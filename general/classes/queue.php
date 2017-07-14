@@ -34,9 +34,3 @@ class Queue {
 		return $this->queue;
 	}
 }
-
-$myGoodQueue = new Queue(array(1, 2, 3));
-
-print_r($myGoodQueue->retrieve());
-
-// $myBadQueue = new Queue(array(1, 2, 3), 2);

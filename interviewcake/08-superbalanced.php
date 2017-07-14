@@ -1,54 +1,34 @@
-<?php
+d<?php
 
-//solution 1: recursive
-function isSuperBalanced($node)
-{
-    echo "checking node " . $node->value . "....";
-    $depths = getLeafDepths($node);
-    if ($depths) {
-        echo "node balanced at depths: ";
-        print_r($depths);
-        return;
-    }
-    echo "node not balanced.";
-    return;
-}
-
-function getLeafDepths($node, $currentDepth = 1)
-{
+//solution 1: iterative
+function isSuperBalanced($root) {
     $depths = array();
-    // if its a leaf, return an array with it's depth pass up its depth
-    if (!$node->leftNode && !$node->rightNode) {
-        return array($currentDepth);
-    }
-    // otherwise it's not a leaf, in which case run it through recursively until it is.
-    if ($node->leftNode) {
-        $leftDepths = getLeafDepths($node->leftNode, $currentDepth + 1);
-        $depths = $leftDepths ? array_unique(array_merge((array)$depths, $leftDepths)) : false;
+
+
+    $nodes_and_depths = array(array($root, 0));
+
+    while ($nodes_and_depths) {
+        $node_and_depth = array_pop($nodes_and_depths);
+        $node = $node_and_depth[0];
+        $depth = $node_and_depth[1];
+        if (!$node->leftNode && !$node->rightNode) {
+            if (array_search($depth, $depths) === false) {
+                array_push($depths,$depth);
+            }
+            if (count($depths) > 2 || abs($depth[0] - $depth[1]) > 1) {
+                return false;
+            }
+        }
+        if ($node->leftNode) {
+            array_push($nodes_and_depths, array($node->leftNode, $depth + 1));
+        }
+        if ($node->rightNode) {
+            array_push($nodes_and_depths, array($node->rightNode, $depth + 1));
+        }
     }
 
-    if ($node->rightNode) {
-        $rightDepths = getLeafDepths($node->rightNode, $currentDepth + 1);
-        $depths = $rightDepths ? array_unique(array_merge((array)$depths, $rightDepths)) : false;
-    }
-
-    if (!$depths) {
-        return false;
-    }
-    if (count($depths) < 2) {
-        return $depths;
-    }
-    if (count($depths) > 2) {
-        return false;
-    }
-    if (abs($depths[0] - $depths[1]) > 1) {
-        return false;
-    }
-    return $depths;
+    return true;
 }
-
-// ******************************************************
-// solution 2: iterative
 
 
 // ******************************************************
@@ -113,10 +93,8 @@ $nodeJ->insertLeft($nodeL);
 $nodeJ->insertRight($nodeM);
 $nodeL->insertLeft($nodeP);
 $nodeK->insertLeft($nodeN);
-$nodeO->insertRight($nodeO);
+$nodeN->insertRight($nodeO);
 $nodeP->insertLeft($nodeQ);
 
+print_r(isSuperBalanced($nodeA) && !isSuperBalanced($nodeI));
 
-// run solution 1
-isSuperBalanced($nodeA);
-isSuperBalanced($nodeI);

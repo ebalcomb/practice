@@ -35,11 +35,3 @@ class Stack {
 		return $this->stack;
 	}
 }
-
-$myStack = new Stack(array('first', 'second', 'third'));
-
-$myStack->add('fourth');
-
-print_r($myStack->retrieve());
-
-print_r($myStack->getStack());
