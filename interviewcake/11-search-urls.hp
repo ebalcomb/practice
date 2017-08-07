@@ -1,0 +1,90 @@
+<?php
+
+class TrieNode
+{
+    private $children = array();
+
+    public function getChild($character)
+    {
+        return $this->children[$character];
+    }
+
+    public function hasChild($character)
+    {
+        return array_key_exists($character, $this->children);
+    }
+
+    public function addChild($character)
+    {
+        $this->children[$character] = new TrieNode();
+    }
+}
+
+
+class Trie
+{
+
+    private $rootNode;
+    public function __construct() {
+        $this->rootNode = new TrieNode();
+    }
+
+    public function checkForAndAddWord($word) {
+        $currentNode = $this->rootNode;
+        $newWord = false;
+        $end = '\0';
+
+        $characters = str_split($word);
+
+        for ($i = 0; $i < count($characters); $i++) {
+            $character = $characters[i];
+
+            if (!$currentNode->hasChild($character)) {
+                $newWord = true;
+                $currentNode->addChild($character);
+            }
+
+            $currentNode = $currentNode->getChild($character);
+        }
+
+        if (!$currentNode->hasChild($end)) {
+            $newWord = true;
+            $currentNode->addChild($end);
+        }
+
+        return $newWord;
+    }
+}
+
+function test() {
+    $myUrlStorer = new Trie();
+    $values = array('www.google.com','www.cat.com', 'www.fred.com');
+
+    foreach ($values as $value) {
+        $result = $myUrlStorer->checkForAndAddWord($value);
+        if (!$result) {
+            $failures[] = $value;
+        };
+    }
+
+    foreach ($values as $value) {
+        $result = $myUrlStorer->checkForAndAddWord($value);
+        if (!$result) {
+            $failures[] = $value;
+        }
+    }
+
+    if (!count($failures)) {
+        print_r('success');
+    } else {
+        foreach ($failures as $failure) {
+            echo($failure . "\n");
+        }
+    }
+}
+
+$failures = test();
+if (count($failures)) {
+    print_r($failures);
+}
+
